@@ -24,8 +24,12 @@ button_rock = tk.Button(choice_frame, text = "Rock", command = choose_rock,heigh
 button_paper = tk.Button(choice_frame, text = "Paper", command = choose_paper,height=7)
 button_scissors = tk.Button(choice_frame, text = "Scissors", command = choose_scissors,height=7)
 
+button_decide = tk.Button(root, text = "Submit")
+
 button_rock.pack(expand=True,side="left",fill='x')
 button_paper.pack(expand=True,side="left",fill='x')
 button_scissors.pack(expand=True,side="left",fill='x')
+
+button_decide.pack()
 
 root.mainloop()
