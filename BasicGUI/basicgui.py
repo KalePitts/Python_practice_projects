@@ -8,30 +8,36 @@ random.seed()
 
 def battle(player_choice,opponent_choice):
     if player_choice == opponent_choice:
-        selection_label.configure(text = "It's a draw!")
+        open_result_window("You both chose the same fighter! It's a draw!")
         return
     if player_choice == "rock":
         if opponent_choice == "paper":
-            selection_label.configure(text = "You lost!")
+            open_result_window("Your rock vs. their paper! You lose!")
         else:
-            selection_label.configure(text = "You won!")
+            open_result_window("Your rock vs. their scissors! You win!")
     elif player_choice == "paper":
         if opponent_choice == "scissors":
-            selection_label.configure(text = "You lost!")
+            open_result_window("Your paper vs. their scissors! You lose!")
         else:
-            selection_label.configure(text = "You won!")
+            open_result_window("Your scissors vs. their paper! You win!")
     elif player_choice == "scissors":
         if opponent_choice == "rock":
-            selection_label.configure(text = "You lost!")
+            open_result_window("Your scissors vs. their rock! You lose!")
         else:
-            selection_label.configure(text = "You won!")
+            open_result_window("Your scissors vs their paper! You win!")
 
 def submit_answer():
+    selection_label.configure(text = "Select your fighter!")
+    opponent_label.configure(text = "Your opponent awaits your decision.")
+    photo_label.configure(image = selection_image)
+    global prospective_choice
     if(prospective_choice != "none"):
         final_choice = prospective_choice
+        prospective_choice = "none"
         opponent_choice = random.choice(["rock","paper","scissors"])
-        opponent_label.configure(text = "The opponent chose " + opponent_choice + "!")
         battle(final_choice, opponent_choice)
+    else:
+        open_result_window("You did not choose a fighter! Try again.")
 
 def choose_rock():
     selection_label.configure(text = "You choose rock!")
@@ -51,6 +57,14 @@ def choose_scissors():
     global prospective_choice 
     prospective_choice = "scissors"
 
+def open_result_window(result_str):
+    new_window = tk.Toplevel(root)
+    new_window.geometry("500x400")
+    new_window.focus_force()
+    result_label = tk.Label(new_window, text = result_str, font = ('Comic Sans', 15), pady= 150).pack()
+
+global prospective_choice
+prospective_choice = "none"
 selection_label = tk.Label(root, text="Select your fighter!", font = ('Comic Sans', 18),pady=20)
 opponent_label = tk.Label(root, text = "Your opponent awaits your decision.", font = ('Comic Sans', 24),pady=100)
 
