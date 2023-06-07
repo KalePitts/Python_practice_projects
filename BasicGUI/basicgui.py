@@ -7,29 +7,33 @@ root.title("Rock Paper Scissors")
 random.seed()
 
 def battle(player_choice,opponent_choice):
+    global wins, losses
     if player_choice == opponent_choice:
         open_result_window("You both chose the same fighter! It's a draw!")
-        return
-    if player_choice == "rock":
+    elif player_choice == "rock":
         if opponent_choice == "paper":
             open_result_window("Your rock vs. their paper! You lose!")
+            losses +=1
         else:
             open_result_window("Your rock vs. their scissors! You win!")
+            wins +=1
     elif player_choice == "paper":
         if opponent_choice == "scissors":
             open_result_window("Your paper vs. their scissors! You lose!")
+            losses +=1
         else:
-            open_result_window("Your scissors vs. their paper! You win!")
+            open_result_window("Your paper vs. their rock! You win!")
+            wins +=1
     elif player_choice == "scissors":
         if opponent_choice == "rock":
             open_result_window("Your scissors vs. their rock! You lose!")
+            losses +=1
         else:
             open_result_window("Your scissors vs their paper! You win!")
+            wins +=1
+    update_main_window()
 
 def submit_answer():
-    selection_label.configure(text = "Select your fighter!")
-    opponent_label.configure(text = "Your opponent awaits your decision.")
-    photo_label.configure(image = selection_image)
     global prospective_choice
     if(prospective_choice != "none"):
         final_choice = prospective_choice
@@ -38,6 +42,15 @@ def submit_answer():
         battle(final_choice, opponent_choice)
     else:
         open_result_window("You did not choose a fighter! Try again.")
+
+def update_main_window():
+    global wins,losses
+    selection_label.configure(text = "Select your fighter!")
+    opponent_label.configure(text = "Your opponent awaits your decision.")
+    photo_label.configure(image = selection_image)
+    win_label.configure(text = "Your wins: " + str(wins))
+    lose_label.configure(text = "Your losses: " + str(losses))
+
 
 def choose_rock():
     selection_label.configure(text = "You choose rock!")
@@ -65,10 +78,18 @@ def open_result_window(result_str):
 
 global prospective_choice
 prospective_choice = "none"
+global wins 
+wins = 0
+global losses
+losses = 0
+
+choice_frame = tk.Frame(root, padx = 40,pady=20)
+counter_frame = tk.Frame(root,padx = 40,pady=10)
+
 selection_label = tk.Label(root, text="Select your fighter!", font = ('Comic Sans', 18),pady=20)
 opponent_label = tk.Label(root, text = "Your opponent awaits your decision.", font = ('Comic Sans', 24),pady=100)
-
-choice_frame = tk.Frame(root, padx = 2,pady=20)
+win_label = tk.Label(counter_frame, text = "Your wins: " + str(wins), font = ('Comic Sans', 12))
+lose_label = tk.Label(counter_frame, text = "Your losses: " + str(losses), font = ('Comc Sans',12))
 
 button_rock = tk.Button(choice_frame, text = "Rock", command = choose_rock,height=7)
 button_paper = tk.Button(choice_frame, text = "Paper", command = choose_paper,height=7)
@@ -81,7 +102,9 @@ rock_image = tk.PhotoImage(file = "images/rock.png")
 paper_image = tk.PhotoImage(file = "images/paper.png")
 scissors_image = tk.PhotoImage(file = "images/scissors.png")
 
-
+counter_frame.pack(fill = 'x')
+win_label.pack(side="left")
+lose_label.pack(side="right")
 selection_label.pack()
 photo_label.pack()
 choice_frame.pack(fill = 'x')
@@ -90,7 +113,5 @@ button_paper.pack(expand=True,side="left",fill='x')
 button_scissors.pack(expand=True,side="left",fill='x')
 button_decide.pack()
 opponent_label.pack()
-
-
 
 root.mainloop()
